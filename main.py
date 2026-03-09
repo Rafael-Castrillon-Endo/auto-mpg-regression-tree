@@ -4,6 +4,7 @@ from src.train_model import train_model
 from src.evaluate import evalute_r2_score
 from src.show_tree import show_tree
 from src.evaluate import evalute_mean_squared_error
+from src.most_important_features import most_important_features
 from sklearn.tree import plot_tree
 
 
@@ -25,4 +26,6 @@ predictions = model.predict(X_test)
 print(f" Model mean squared error -> {evalute_mean_squared_error(predictions, y_test)}")
 print(f" Model r2 score -> {evalute_r2_score(predictions, y_test)}")
 
-show_tree(model, X)
+#show_tree(model, X)
+importance = most_important_features(model.feature_importances_, X)
+print(importance)
