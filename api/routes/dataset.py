@@ -1,12 +1,11 @@
 from fastapi import APIRouter, Query
+from src.load_data import load_data
 import pandas as pd
-
-PATH = "data_set/auto-mpg.csv"
 
 router = APIRouter()
 @router.get("/dataset")
-def get_dataset(limit : int = Query(default = None, gt = 0)):
-    df = pd.read_csv(PATH)
+def get_dataset(limit : int  = Query(default= None, gp = 0)):
+    df = load_data()
     if(limit):
         df = df.head(limit)
-    return df.to_dict(orient="records")
+    return df.to_dict(orient = "records")
