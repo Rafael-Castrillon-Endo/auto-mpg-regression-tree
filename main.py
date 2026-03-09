@@ -1,6 +1,6 @@
 from src.load_data import load_data
-from src.preprocess import emtpy_values
+from src.preprocess import preprocess
 
 data = load_data()
 
-emtpy_values(data)
+preprocess(data)
