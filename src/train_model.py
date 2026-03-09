@@ -1,6 +1,6 @@
 from sklearn.tree import DecisionTreeRegressor
 
-def train_model(X, y):
+def train_model(x, y):
     model = DecisionTreeRegressor()
-    model.fit(X, y)
+    model.fit(x, y)
     return model
