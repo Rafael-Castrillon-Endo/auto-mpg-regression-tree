@@ -1,4 +1,4 @@
-FEATURES = ['mpg', 'cylinders', 'displacement',
+FEATURES = ['cylinders','displacement',
             'horsepower', 'weight', 'acceleration',
             'model year', 'origin']
 
@@ -33,6 +33,16 @@ def preprocess(data):
       #  print(row)
        # print("================================")
     #print(f"size -> {len(index)}")
+    if(len(index)):
+        avarage = get_avarage_features(data)
+        for i in range(len(index)):
+            #{'index_value': x, 'col' : x}
+            index_value = index[i]['index_value']
+            col = index[i]['col']
+            data.at[index_value, FEATURES[col]] = (avarage[col])
+        return data
+    else:
+        return data
 
 
     
