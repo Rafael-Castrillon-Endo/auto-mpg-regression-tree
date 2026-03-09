@@ -12,6 +12,20 @@ def emtpy_values(data):
     #print(len(index))
     return index
 
+def get_avarage_features(data):
+    avarage = [0] * len(FEATURES)
+    size = [0] * len(FEATURES)
+    for i in range(len(data)):
+        row = data.iloc[i]
+        for j in range(len(FEATURES)):
+            if(row[FEATURES[j]] != '?'):
+                avarage[j] += float(row[FEATURES[j]])
+                size[j] += 1
+    for i in range(len(avarage)):
+        avarage[i] = avarage[i] / size[i]
+    return avarage
+
+
 def preprocess(data):
     index = emtpy_values(data)
     #for i in range(len(index)):
@@ -19,5 +33,7 @@ def preprocess(data):
       #  print(row)
        # print("================================")
     #print(f"size -> {len(index)}")
+
+
     
 
