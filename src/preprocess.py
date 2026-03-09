@@ -1,3 +1,5 @@
+import math
+
 FEATURES = ['cylinders','displacement',
             'horsepower', 'weight', 'acceleration',
             'model year', 'origin']
@@ -17,7 +19,7 @@ def get_avarage_features(data):
     for i in range(len(data)):
         row = data.iloc[i]
         for j in range(len(FEATURES)):
-            if(row[FEATURES[j]] != '?'):
+            if(not math.isnan(row[FEATURES[j]])):
                 avarage[j] += float(row[FEATURES[j]])
                 size[j] += 1
     for i in range(len(avarage)):
@@ -27,6 +29,9 @@ def get_avarage_features(data):
 
 def preprocess(data):
     index = emtpy_values(data)
+    for i in range(len(FEATURES)):
+        data[FEATURES[i]] = data[FEATURES[i]].replace('?', None)
+        data[FEATURES[i]] = data[FEATURES[i]].astype(float)
     if(len(index)):
         avarage = get_avarage_features(data)
         for i in range(len(index)):
