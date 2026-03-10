@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Query
-from src.load_data import load_data
+from fastapi import Request
 import pandas as pd
 
 router = APIRouter()
 @router.get("/dataset")
-def get_dataset(limit : int  = Query(default= None, gp = 0)):
-    df = load_data()
-    if(limit):
+def get_dataset(request : Request, limit : int  = Query(default= None, ge = 0)):
+    df = request.app.state.dataset
+    if(limit is not None):
         df = df.head(limit)
     return df.to_dict(orient = "records")
