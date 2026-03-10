@@ -4,10 +4,14 @@ from api.routes import dataset
 from contextlib import asynccontextmanager
 from src.load_data import load_data
 from api.routes import dataset
+from api.routes import delete
+from api.routes import train
 
 @asynccontextmanager
 async def lifespan(app : FastAPI):
-    app.state.dataset = load_data()
+    df = load_data()
+    df["idx"] = df.index
+    app.state.dataset = df
     yield
 
 app = FastAPI(lifespan = lifespan)
@@ -25,4 +29,6 @@ app.add_middleware(
 )
 
 app.include_router(dataset.router)
+app.include_router(delete.router)
+app.include_router(train.router)
 
