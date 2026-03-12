@@ -10,7 +10,7 @@ def train(request : Request):
     df = request.app.state.dataset
     if(df is None):
         raise HTTPException(404, 'Dataset no cargado aún')
-    X = df.drop(columns = ["mpg", "idx"], errors = 'ignore')
+    X = df.drop(columns = ["mpg", "idx", "car name"], errors = 'ignore')
     y = df["mpg"]
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=42)
     request.app.state.X_test = X_test
