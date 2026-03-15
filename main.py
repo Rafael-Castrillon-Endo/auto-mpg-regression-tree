@@ -4,6 +4,15 @@ from src.train_model import train_model
 from src.evaluate import evalute_mean_squared_error, evalute_r2_score
 from src.train_model_forest import train_model_forest
 from src.most_important_features import most_important_features
+from src.show_tree import show_tree
+from src.graphs import plot_model_year_distribution
+from src.graphs import plot_model_cylinders
+from src.graphs import plot_mpg_weight_regression
+from src.graphs import plot_mpg_vs_displacement
+from src.graphs import plot_density_comparison
+from src. graphs import plot_feature_importance
+
+
 import math
 
 data = load_data()
@@ -12,7 +21,7 @@ X = data.drop(columns= ['mpg'])
 y = data['mpg']
 
 def main_tree_s():
-    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2, random_state= 42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
     model = train_model(X_train, y_train)
     predictions = model.predict(X_test)
 
@@ -22,7 +31,9 @@ def main_tree_s():
     print(f"mean squared error -> {mse}")
     print(f"r2 score -> {rrscore}")
     print(f" % de error -> {math.sqrt(mse)}")
+    show_tree(model, X)
     print("=====================================================")
+    importance = model.feature_importances_
 
 def main_tree_frst():
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2, random_state= 42)
@@ -42,16 +53,17 @@ def main_tree_frst():
 
     for i in range(n_trees):
         print(f"Random Forest Arbol {i + 1}")
-        featur_importance = model.estimators_[i].feature_importances_
-
-        ft_importance = most_important_features(featur_importance, X)
-        print(" == importance features == ")
-        print(ft_importance)
-        print(" == Depth == ")
-        print(model.estimators_[i].get_depth())
-
+        arbol_i = model.estimators_[i]
+        #show_tree(arbol_i, X)
+        predict = arbol_i.predict(X_test)
+        plot_density_comparison(y_test, predict)
+        #plot_feature_importance(arbol_i.feature_importances_, X)
     print("=====================================================")
 
 
 
+#main_tree_frst()
+#plot_model_cylinders(data)
+#plot_mpg_weight_regression(data)
+#plot_mpg_vs_displacement(data)
 main_tree_frst()
