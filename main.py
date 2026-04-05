@@ -13,6 +13,7 @@ from src.graphs import plot_mpg_vs_displacement
 from src.graphs import plot_density_comparison
 from src. graphs import plot_feature_importance
 from src.neural_network import neural_network
+from src.KNN import knn_regression
 
 
 import math
@@ -29,9 +30,19 @@ def main_nw():
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
     model.fit(X_train, y_train)
     predict = model.predict(X_test)
-    print("MSE: ", mean_squared_error(y_test, predict))
-    print("R2: ", r2_score(y_test, predict))
+    print("MSE Neural_Network -> ", mean_squared_error(y_test, predict))
+    print("R2 Neural_Network ->: ", r2_score(y_test, predict))
     return model
+
+def main_knn():
+    model = knn_regression()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
+
+    model.fit(X_train, y_train)
+
+    predict = model.predict(X_test)
+    print("MSE KNN ->", mean_squared_error(y_test, predict))
+    print("R2 KNN -> ",  r2_score(y_test, predict))
 
 def main_tree_s():
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
@@ -74,7 +85,7 @@ def main_tree_frst():
     print("=====================================================")
 
 
-main_nw()
+main_knn()
 #main_tree_frst()
 #plot_model_cylinders(data)
 #plot_mpg_weight_regression(data)
