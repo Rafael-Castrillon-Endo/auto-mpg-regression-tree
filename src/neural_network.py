@@ -2,6 +2,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
+
 def neural_network():
     model = Pipeline([
         ('Scaler', StandardScaler()),

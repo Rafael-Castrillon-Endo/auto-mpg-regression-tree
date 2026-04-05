@@ -14,6 +14,9 @@ from src.graphs import plot_density_comparison
 from src. graphs import plot_feature_importance
 from src.neural_network import neural_network
 from src.KNN import knn_regression
+from src.svm import svm_regression
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 import math
@@ -27,11 +30,32 @@ y = data['mpg']
 
 def main_nw():
     model = neural_network()
-    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=42)
+    
     model.fit(X_train, y_train)
+    
     predict = model.predict(X_test)
+    
     print("MSE Neural_Network -> ", mean_squared_error(y_test, predict))
     print("R2 Neural_Network ->: ", r2_score(y_test, predict))
+    
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+
+    ax1.scatter(y_test, predict, alpha=0.5, color='blue')
+    ax1.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+    ax1.set_xlabel('Valores Reales')
+    ax1.set_ylabel('Predicciones')
+    ax1.set_title('Predicción vs Realidad (Evaluación)')
+
+    loss_values = model.named_steps['mlp'].loss_curve_
+    ax2.plot(loss_values, color='red')
+    ax2.set_xlabel('Iteraciones')
+    ax2.set_ylabel('Pérdida (Loss)')
+    ax2.set_title('Curva de Aprendizaje (Convergencia)')
+
+    plt.tight_layout()
+    plt.show()
+
     return model
 
 def main_knn():
@@ -43,6 +67,21 @@ def main_knn():
     predict = model.predict(X_test)
     print("MSE KNN ->", mean_squared_error(y_test, predict))
     print("R2 KNN -> ",  r2_score(y_test, predict))
+    return model
+
+def main_svm():
+    model = svm_regression()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
+    model.fit(X_train, y_train)
+    predict = model.predict(X_test)
+    print("MSE SVM -> ", mean_squared_error(y_test, predict))
+    print("R2 SVM ->", r2_score(y_test, predict))
+    return model
+
+def main_s():
+    model_nw = main_nw()
+    model_knn = main_knn()
+    model_svm = main_svm()
 
 def main_tree_s():
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
@@ -85,9 +124,5 @@ def main_tree_frst():
     print("=====================================================")
 
 
-main_knn()
-#main_tree_frst()
-#plot_model_cylinders(data)
-#plot_mpg_weight_regression(data)
-#plot_mpg_vs_displacement(data)
-#main_tree_s()
+
+main_nw()
