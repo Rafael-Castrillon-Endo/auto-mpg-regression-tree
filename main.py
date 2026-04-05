@@ -17,7 +17,7 @@ from src.KNN import knn_regression
 from src.svm import svm_regression
 import matplotlib.pyplot as plt
 import numpy as np
-
+import seaborn as sns 
 
 import math
 
@@ -71,9 +71,33 @@ def main_knn():
 
 def main_svm():
     model = svm_regression()
-    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, test_size=0.2, random_state=42)
+    
     model.fit(X_train, y_train)
     predict = model.predict(X_test)
+    
+    residuals = y_test - predict
+    
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+
+    ax1.scatter(y_test, predict, alpha=0.6, color='seagreen')
+    ax1.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+    ax1.set_xlabel('Valores Reales')
+    ax1.set_ylabel('Predicciones')
+    ax1.set_title('SVR: Predicción vs Realidad')
+
+    ax2.scatter(predict, residuals, alpha=0.6, color='darkorange')
+    ax2.axhline(y=0, color='black', linestyle='--', lw=2)
+    ax2.axhline(y=0.1, color='red', linestyle=':', label='Margen Epsilon ($\epsilon$)')
+    ax2.axhline(y=-0.1, color='red', linestyle=':')
+    ax2.set_xlabel('Valores Predichos')
+    ax2.set_ylabel('Residuos (Error)')
+    ax2.set_title('Análisis de Residuos (Margen $\epsilon$)')
+    ax2.legend()
+
+    plt.tight_layout()
+    plt.show()
+
     print("MSE SVM -> ", mean_squared_error(y_test, predict))
     print("R2 SVM ->", r2_score(y_test, predict))
     return model
