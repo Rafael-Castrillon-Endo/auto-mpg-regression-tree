@@ -1,4 +1,5 @@
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 from src.load_data import load_data
 from src.train_model import train_model
 from src.evaluate import evalute_mean_squared_error, evalute_r2_score
@@ -11,6 +12,7 @@ from src.graphs import plot_mpg_weight_regression
 from src.graphs import plot_mpg_vs_displacement
 from src.graphs import plot_density_comparison
 from src. graphs import plot_feature_importance
+from src.neural_network import neural_network
 
 
 import math
@@ -19,6 +21,17 @@ data = load_data()
 data = data.drop(columns= ['car name'])
 X = data.drop(columns= ['mpg'])
 y = data['mpg']
+
+
+
+def main_nw():
+    model = neural_network()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
+    model.fit(X_train, y_train)
+    predict = model.predict(X_test)
+    print("MSE: ", mean_squared_error(y_test, predict))
+    print("R2: ", r2_score(y_test, predict))
+    return model
 
 def main_tree_s():
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size= 0.8, test_size= 0.2)
@@ -61,9 +74,9 @@ def main_tree_frst():
     print("=====================================================")
 
 
-
+main_nw()
 #main_tree_frst()
 #plot_model_cylinders(data)
 #plot_mpg_weight_regression(data)
 #plot_mpg_vs_displacement(data)
-main_tree_frst()
+#main_tree_s()
